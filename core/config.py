@@ -1,0 +1,182 @@
+from enum import Enum
+
+from pydantic import PostgresDsn, RedisDsn
+from pydantic_settings import BaseSettings
+
+
+class EnvironmentType(str, Enum):
+    DEVELOPMENT = "development"
+    PRODUCTION = "production"
+    TEST = "test"
+
+
+class BaseConfig(BaseSettings):
+    class Config:
+        # env_file: ClassVar[str] = ".env"
+        case_sensitive = True
+
+
+class Config(BaseConfig):
+    APP_NAME: str = "customer-1.0"
+    DEBUG: int = 0
+    DEFAULT_LOCALE: str = "en_US"
+    ENVIRONMENT: str = EnvironmentType.DEVELOPMENT
+    POSTGRES_URL: PostgresDsn = (
+        "postgresql+asyncpg://anandh:password@127.0.0.1:5432/fastapi-db"
+    )
+    TEST_POSTGRES_URL: PostgresDsn = (
+        "postgresql+asyncpg://anandh:password@127.0.0.1:5432/fastapi-db"
+    )
+    ANALYST_DATABASE_NAME: str = "analyst_incidents"
+    ANALYST_DATABASE_USER: str = "aravindhan"
+    ANALYST_DATABASE_PASSWORD: str = "root"
+    ANALYST_DATABASE_HOST: str = "host.docker.internal"
+    ANALYST_DATABASE_PORT: str = "5432"
+    AWS_ACCESS_KEY_ID: str = ""
+    AWS_SECRET_ACCESS_KEY: str = ""
+    AWS_REGION_NAME: str = ""
+    AWS_CUSTOMER_INCIDENTS_BUCKET_NAME: str = ""
+    AWS_CUSTOMER_INCIDENTS_CLOUDFRONT_URL: str = ""
+    BLACKLIST_FIREBASE_ENABLED: bool = True
+    BLACKLIST_WEBSOCKET_ENABLED: bool = True
+    REDIS_URL: RedisDsn = "redis://localhost:6379/7"
+    RELEASE_VERSION: str = "0.1"
+    SHOW_SQL_ALCHEMY_QUERIES: int = 0
+    SECRET_KEY: str = "super-secret-key"
+    CAMERA_OFFLINE_CONTENT: str = (
+        "Camera {{ids}} currently offline. "
+        "This may impact the accuracy of Visu.ai's monitoring."
+    )
+    HARDWARE_OFFLINE_CONTENT: str = (
+        "Hardware is currently offline, preventing Visu.ai from monitoring"
+    )
+    HARDWARE_TROUBLESHOOT_ENABLED: bool = True
+    HARDWARE_TROUBLESHOOT_URL: str = (
+        "https://youtube.com/shorts/DjsxRzdNigo?feature=share"
+    )
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRE_MINUTES: int = 60 * 24
+    CELERY_BROKER_URL: str = "amqp://rabbit:password@localhost:5672"
+    CELERY_BACKEND_URL: str = "redis://localhost:6379/0"
+    FIREBASE_CONFIG_FILE_PATH_DEV: str = "core/utils/firebase/firebase_config.json"
+    FIREBASE_CONFIG_FILE_PATH_PROD: str = "core/utils/firebase/firebase_config.json"
+    MAIL_SERVER: str = ""
+    MAIL_PORT: str = ""
+    MAIL_FROM_ADDRESS: str = ""
+    MAIL_USERNAME: str = ""
+    MAIL_PASSWORD: str = ""
+    LOG_FILE: str = "visu-entity.log"
+    LOG_MAX_MB: int = 5
+    LOG_BACKUP_COUNT: int = 5
+    VISU_LOGO_URL: str = "https://dfe9rpufc5h8l.cloudfront.net/Visu-white-logo.png"
+    TEST_COMPANY_ID: str = "70bcfdea-c044-4064-9dde-29dbc874e549"
+    TEST_STORE_ID: str = "c6a57500-da0d-453a-8c99-4860e29e5a64"
+    TEST_CAMERA_ID: str = "1e1eac06-8a83-4029-a693-9af946e3a9a0"
+    TEST_PREV_INCI_ID: str = "0990c698-7cc2-444c-9d82-3071523abf9d"
+    TEST_CUSTOMER_ID: str = "test_customer_1"
+    TEST_GIF_URL: str = (
+        "https://customer-cdn.visu.ai/"
+        "9037cc8e-8b11-4708-97a9-be11ce424971_camera9_GES_20250613085646_converted.gif"
+    )
+    TEST_FACE_URL: str = (
+        "https://customer-cdn.visu.ai/"
+        "99986140-0557-11f0-8b5c-0a957aa511a1_camera01_2025-08-04_73.jpg"
+    )
+    TEST_THUMBNAIL_URL: str = (
+        "https://customer-cdn.visu.ai/"
+        "a238999a-b5bf-455c-b70b-a2a34a9032e1_camera16_20251113001536_converted.jpg"
+    )
+    TEST_VIDEO_URL: str = (
+        "https://customer-cdn.visu.ai/"
+        "a238999a-b5bf-455c-b70b-a2a34a9032e1_camera16_20251113001536_converted.mp4"
+    )
+    STATUS_NONE: int = 0
+    NO_ACTION: int = 1
+    ESCAPE_THEFT: int = 2
+    THEFT_STOPPED: int = 3
+    BLACKLISTED: int = 4
+    CAMERA_INCIDENTS: int = 5
+    SENSITIVE: int = 6
+    LIKELY_THEFT: int = 7
+    PREVIOUSLY_BLACKLISTED: int = 8
+    CUSTOMER_ID: list[str] = ["test_customer_1", "test_customer_2", "test_customer_3"]
+    ENTITY_SERVICE_URL: str = "http://localhost:4000/v1/users/"
+    CUSTOMER_SERVICE_URL: str = "http://host.docker.internal:4004"
+    TELEGRAM_SERVICE_URL: str = "https://telegram-staging.visu.ai"
+    QUEUEING_SERVICE_URL: str = "http://host.docker.internal:7003"
+    CUSTOMER_ANALYST_SERVICE_URL: str = "https://customer-analystapi.visu.ai"
+    ENTITY_SERVICE_HEADER: dict = {"Content-Type": "application/json"}
+    FIREBASE_INCIDENTS_COLLECTION: str = "customer_incidents"
+    FIREBASE_CAMERA_COLLECTION: str = "camera_incidents"
+    FIREBASE_BLACKLIST_INCIDENTS_COLLECTION: str = "blacklisted_incidents"
+    FIREBASE_CUSTOMER_DATA_COLLECTION: str = "customer_data"
+    SUPER_USER_ROLE_ID: int = 1
+    ANALYST_ROLE_ID: int = 2
+    COMPANY_ADMIN_ROLE_ID: int = 3
+    BRANCH_ADMIN_ROLE_ID: int = 4
+    BLACKLIST_TEMPLATE: str = "High Risk Alert"
+    PREVIOUSLY_BLACKLISTED_TEMPLATE: str = "Was on watchlist"
+    ESCAPE_THEFT_TEMPLATE: str = "Medium Risk Alert"
+    THEFT_STOPPED_TEMPLATE: str = "Medium Risk Alert"
+    SENSITIVE_ALERT_TEMPLATE: str = "Gesture Alert"
+    LIKELY_THEFT_ALERT_TEMPLATE: str = "Likely Theft"
+    CAMERA_UP_TEMPLATE: str = "Camera back online"
+    CAMERA_DOWN_TEMPLATE: str = "Camera offline"
+    TIMEZONE: str = "Asia/Kolkata"
+    TELEGRAM_WAS_ON_WATCHLIST_ENABLED: int = 1
+    TELEGRAM_SENSITIVE_ALERT_ENABLED: int = 0
+    PROFILING_ENABLED: int = 0
+    QUEUEING_ENABLED: int = 0
+    FIREBASE_LISTENER_ENABLED: int = 0
+    NOTIFICATION_GROUP_TYPE_BLACKLISTED_PERSON: str = "Watchlist alert"
+    NOTIFICATION_GROUP_TYPE_LIKELY_THEFT: str = "Likely theft alerts"
+    NOTIFICATION_GROUP_TYPE_SENSITIVE_ALERT: str = "Gesture alerts"
+    NOTIFICATION_GROUP_TYPE_THEFT_STOPPED: str = "Theft stopped"
+    NOTIFICATION_GROUP_TYPE_ESCAPE_THEFT: str = "Escape theft"
+    NOTIFICATION_GROUP_TYPE_CAMERA_DOWN: str = "Camera down"
+    NOTIFICATION_TYPE_PUSH_NOTIFICATION: str = "Push notification"
+    NOTIFICATION_TYPE_BLACKLIST_ALERT: str = "Watchlist alert"
+    NOTIFICATION_CHANNEL_BLACKLIST_ALERT: str = "watchlist_channel"
+    NOTIFICATION_CHANNEL_SENSITIVE_ALERT: str = "sensitive_alert_channel"
+    NOTIFICATION_CHANNEL_LIKELY_THEFT_ALERT: str = "likely_theft_channel"
+    NOTIFICATION_SOUND_BLACKLIST_ALERT: str = "watchlist"
+    NOTIFICATION_SOUND_SENSITIVE_ALERT: str = "sensitive"
+    NOTIFICATION_SOUND_LIKELY_THEFT_ALERT: str = "theft"
+    TELEGRAM_LOG_FILE: str = "visu-customer-telegram.log"
+    TEST_INCIDENT_DESCRIPTOR: str = (
+        "[-0.15401671081781387, 0.08389571841273989, 0.06161731907299587,-0.09217404148408345, "
+        "-0.16367696012769425, 0.007261214511735099, -0.014146071459565843, -0.05559497486267771, "
+        "0.12448039438043322, -0.05871120121862207, 0.19551534737859452, -0.02687855437397957, "
+        "-0.2573763451405934, -0.029387532068150386, 0.02149082294532231, 0.137812146118709, "
+        "-0.18465425074100494, -0.09394843344177518, -0.10944080565656934, -0.086159705051354, "
+        "0.018545076517122134, 0.07701674689139638, -0.0345504635146686, 0.05724122055939266, "
+        "-0.12219454241650445, -0.34966891152518137, -0.02618278988770076, -0.09778999324355807, "
+        "0.03436595919941153, -0.07087475061416626, 0.041638037988117764, 0.05806155928543636, "
+        "-0.1517261117696762, -0.04434181217636381, -0.016068818313734873, 0.03866505942174366, "
+        "-0.06417564302682877, -0.09226799649851662, 0.17514445100511825, 0.02026739077908652, "
+        "-0.17946886377675192, 0.004644204463277545, 0.021463403744356974, 0.25863159128597807, "
+        "0.1646137684583664, 0.006625239870377949, 0.06145908577101571, -0.059064420206206183, "
+        "0.1439268014260701, -0.27722335287502836, 0.01946985881243433, 0.16361309800829207, "
+        "0.09465053358248302, 0.043392659298011234, 0.0643777884542942, -0.13599479624203273, "
+        "0.05723672040871212, 0.1252684486763818, -0.21366883282150542, 0.08849866049630302, "
+        "0.07744672894477844, -0.09149588750941413, 0.008778338054461139, -0.0637857158269201, "
+        "0.19698535757405417, 0.06961879719580923, -0.07713180195008006, -0.1148422019822257, "
+        "0.1386063833321844, -0.11628534964152745, -0.09817366195576531, 0.05104602820106915, "
+        "-0.12374674475618772, -0.18284869194030762, -0.27269635668822695, 0.04269970527717045, "
+        "0.3601323791912624, 0.16145394955362594, -0.19555312395095825, 0.0010500518339020865, "
+        "-0.10203420157943453, -0.029502318373748233, 0.0828614469085421, 0.062447039144379754, "
+        "-0.056928604042955806, -0.10074998012610845, -0.10864945501089096, 0.028715772288186208, "
+        "0.22526627779006958, -0.01653444128377097, -0.006228901179773467, 0.26413032838276457, "
+        "0.08011504262685776, -0.02637983752148492, 0.019193965076868023, 0.03458746309791293, "
+        "-0.12853548782212393, -0.004975695163011551, -0.05034080653318337, -0.01919989607163838, "
+        "0.08398402908018657, -0.09626737609505653, 0.026015756385666982, 0.10249033889600209, "
+        "-0.21314860880374908, 0.23312157605375564, -0.023492631103311266, 0.017869509756565094, "
+        "0.008751567985330309, -0.03395814767905644, -0.06517827191523143, 0.006864332727023533, "
+        "0.18476376576083048, -0.17866374339376176, 0.196766055056027, 0.1806653748665537, "
+        "0.037904606865985055, 0.1511522616658892, 0.05062159363712583, 0.038942936275686534, "
+        "-0.05199328384229115, -0.02215139674288886, -0.16197999566793442, -0.08861633177314486, "
+        "0.07072832914335388, -0.047132360615900586, 0.0420253723859787, 0.06272760512573379]"
+    )
+
+
+config: Config = Config()
